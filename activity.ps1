@@ -39,11 +39,4 @@ Write-Host "Event Hub created: $eventHubName"
 Write-Host "SAS token created: $($sasToken.PrimaryConnectionString)"
 Write-Host "SAS token expiry date: $expiryDate"
 
-# New-AzDeployment -TemplateUri "/subscriptions/5807cfb0-41a6-4da6-b920-71d934d4a2af/resourceGroups/motadata-rg/providers/Microsoft.Resources/templateSpecs/diagnostic-activity-log" `
-#     -Location $location `
-#     -TemplateParameterObject @{
-#         "eventHubNamespace" = $eventHubNamespace
-#         "eventHubName" = $eventHubName
-#         "settingName" = $DiagnosticSettingName
-#         "resourceGroupName" = $resourceGroupName
-#     }
+
