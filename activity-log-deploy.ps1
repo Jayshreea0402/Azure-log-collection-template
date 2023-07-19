@@ -2,7 +2,7 @@ param (
     $SubscriptionId = "5807cfb0-41a6-4da6-b920-71d934d4a2af" ,
     $EventhubNamespace = "motadataEventhubNamespace",
     $FunctionAppName = "motadata-functionapp",
-    $ResourceGroupLocation = "westus2",
+    $ResourceGroupLocation = "eastus",
     $ResourceGroupName = "motadata-rg",
     $EventhubName = "motadataEventhub",
     $FunctionName = "motadata-function",
