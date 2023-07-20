@@ -4,7 +4,7 @@
     "parameters": {
                 "settingName": {
                     "type": "string",
-                    "defaultValue": "motadata-activity-logs-diagnostic-setting",
+                    "defaultValue": "Motadata-activity-logs",
                     "metadata": {
                         "description": "The name of  the diagnostic setting"
                     }
@@ -23,7 +23,7 @@
                 },
                 "eventHubName": {
                     "type": "string",
-                    "defaultValue": "motadataeventhub",
+                    "defaultValue": "motadataEventhub",
                     "metadata": {
                         "description": "Name of the EventHub to which the Activity logs will be sent."
                     }

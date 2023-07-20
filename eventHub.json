@@ -5,12 +5,12 @@
     "eventHubNamespace": {
       "type": "string",
       "metadata": {
-        "description": "motadata-eventhub-namespace"
+        "description": "motadataEventhubNamespace"
       }
     },
     "eventHubName": {
       "type": "string",
-      "defaultValue": "motadata-eventhub",
+      "defaultValue": "motadataEventhub",
       "metadata": {
         "description": "Name of Event Hub"
       }

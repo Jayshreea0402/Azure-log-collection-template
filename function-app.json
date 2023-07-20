@@ -6,7 +6,7 @@
             "type": "string",
             "defaultValue": "[concat('motadata-functionapp-', newGuid())]",
             "metadata": {
-                "description": "The name of the function app "
+                "description": "motadataFunctionApp"
             }
         },
         "functionName": {
@@ -18,7 +18,7 @@
         },
         "eventhubName": {
             "type": "string",
-            "defaultValue": "motadataEventhub-1",
+            "defaultValue": "motadataEventhub",
             "metadata": {
                 "description": "The name of the eventhub."
             }
@@ -138,7 +138,7 @@
                     "disabled": false
                 },
                 "files": {
-                    "index.js": "[parameters('functionCode')]"
+                    "__init__.py": "[parameters('functionCode')]"
                 }
             },
             "dependsOn": [

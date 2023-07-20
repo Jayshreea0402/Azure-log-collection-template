@@ -1,12 +1,12 @@
 param (
     $SubscriptionId = "5807cfb0-41a6-4da6-b920-71d934d4a2af",
     $EventhubNamespace = "motadataEventhubNamespace",
-    $FunctionAppName = "motadata-functionapp",
+    $FunctionAppName = "motadataFunctionApp",
     $ResourceGroupLocation = "eastus",
-    $ResourceGroupName = "motadata-rg",
+    $ResourceGroupName = "automated-motadata-rg",
     $EventhubName = "motadataEventhub",
-    $FunctionName = "motadata-function",
-    $DiagnosticSettingName = "activity-logs"
+    $FunctionName = "motadataFunction",
+    $DiagnosticSettingName = "Motadata-activity-logs"
 )
 
 # Set the Azure context to the specified subscription
