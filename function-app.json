@@ -18,7 +18,7 @@
         },
         "eventhubName": {
             "type": "string",
-            "defaultValue": "motadataEventhub",
+            "defaultValue": "motadataeventhub",
             "metadata": {
                 "description": "The name of the eventhub."
             }
@@ -31,6 +31,7 @@
         },
         "functionCode": {
             "type": "string",
+            "defaultValue": "import logging\nimport azure.functions as func\n\ndef main(eventHubMessages: func.EventHubEvent):\n    logging.info('Python EventHub trigger processed an event: %s', eventHubMessages.get_body().decode('utf-8'))\n",
             "metadata": {
                 "description": "Code for the function to run, saved into __init__.py"
             }
@@ -44,7 +45,7 @@
         },
         "endpointSuffix": {
             "type": "string",
-            "defaultValue": "core.windows.net",
+            "defaultValue": "linux",
             "metadata": {
                 "description": "Endpoint suffix for storage account"
             }
@@ -52,9 +53,16 @@
     },
     "variables": {
         "storageAccountName": "[concat(uniquestring(resourceGroup().id), 'storageacct')]",
-        "connectionStringKey": "[concat('Datadog-',parameters('eventhubNamespace'),'-AccessKey')]",
-        "authRule": "[resourceId('Microsoft.EventHub/namespaces/authorizationRules', parameters('eventhubNamespace'),'RootManageSharedAccessKey')]"
+        "connectionStringKey": "RootManageSharedAccessKey",
+        "authRule": "[resourceId('Microsoft.EventHub/namespaces/authorizationRules', parameters('eventhubNamespace'),'RootManageSharedAccessKey')]",
+        "functionAppKind": "functionapp,linux",
+        "functionAppRuntime": "PYTHON|3.10",
+        "linuxFxVersion": "PYTHON|3.10",
+        "siteConfig": {
+        "alwaysOn": true
     },
+    "functionCode": "Your Python Function Code Goes Here"
+  },
     "resources": [
         {
             "type": "Microsoft.Storage/storageAccounts",
@@ -71,7 +79,7 @@
             "type": "Microsoft.Web/sites",
             "name": "[parameters('functionAppName')]",
             "location": "[parameters('location')]",
-            "kind": "functionapp",
+            "kind": "functionapp, linux",
             "dependsOn": [
                 "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]"
             ],
@@ -95,7 +103,7 @@
                         },
                         {
                             "name": "FUNCTIONS_WORKER_RUNTIME",
-                            "value": "python"
+                            "value": "python 3.10"
                         },
                         {
                             "name": "[variables('connectionStringKey')]",
