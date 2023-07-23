@@ -1,149 +1,149 @@
 {
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    "functionAppName": {
-      "type": "string",
-      "defaultValue": "[concat('datadog-functionapp-', newGuid())]",
-      "metadata": {
-        "description": "motadataFunctionApp"
-      }
-    },
-    "functionName": {
-      "type": "string",
-      "defaultValue": "motadataFunction",
-      "metadata": {
-        "description": "motadataFunction"
-      }
-    },
-    "eventhubName": {
-      "type": "string",
-      "defaultValue": "motadataEventhub",
-      "metadata": {
-        "description": "The name of the eventhub."
-      }
-    },
-    "eventhubNamespace": {
-      "type": "string",
-      "metadata": {
-        "description": "motadataEventhubNamespace"
-      }
-    },
-    "functionCode": {
-      "type": "string",
-      "metadata": {
-        "description": "Code for the function to run, saved into __init__.py"
-      }
-    },
-    "location": {
-      "type": "string",
-      "defaultValue": "[resourceGroup().location]",
-      "metadata": {
-        "description": "Location for all resources."
-      }
-    },
-    "endpointSuffix": {
-     "type": "string",
-      "defaultValue": "linux.ne",
-      "metadata": {
-        "description": "Endpoint suffix for storage account"
-      }
-    }
-  },
-  "variables": {
-    "storageAccountName": "[concat(uniquestring(resourceGroup().id), 'storageacct')]",
-    "connectionStringKey": "[concat('Datadog-',parameters('eventhubNamespace'),'-AccessKey')]",
-    "authRule": "[resourceId('Microsoft.EventHub/namespaces/authorizationRules', parameters('eventhubNamespace'),'RootManageSharedAccessKey')]"
-  },
-  "resources": [
-    {
-      "type": "Microsoft.Storage/storageAccounts",
-      "apiVersion": "2019-06-01",
-      "name": "[variables('storageAccountName')]",
-      "location": "[parameters('location')]",
-      "kind": "StorageV2",
-      "sku": {
-        "name": "Standard_LRS"
-      }
-    },
-    {
-      "apiVersion": "2018-11-01",
-      "type": "Microsoft.Web/sites",
-      "name": "[parameters('functionAppName')]",
-      "location": "[parameters('location')]",
-      "kind": "functionapp",
-      "dependsOn": [
-        "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]"
-      ],
-      "properties": {
-        "name": "[parameters('functionAppName')]",
-        "clientAffinityEnabled": false,
-        "siteConfig": {
-          "cors": {
-            "allowedOrigins": [
-              "*"
-            ]
-          },
-          "appSettings": [
-            {
-              "name": "FUNCTIONS_EXTENSION_VERSION",
-              "value": "~4"
-            },
-            {
-              "name": "AzureWebJobsStorage",
-              "value": "[concat('DefaultEndpointsProtocol=https;AccountName=',variables('storageAccountName'),';AccountKey=',listkeys(resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName')), '2018-11-01').keys[0].value,';','EndpointSuffix=',parameters('endpointSuffix'),';')]"
-            },
-            {
-              "name": "FUNCTIONS_WORKER_RUNTIME",
-              "value": "python"
-            },
-            {
-              "name": "[variables('connectionStringKey')]",
-              "value": "[listKeys(variables('authRule'),'2017-04-01').primaryConnectionString]"
-            },
-            {
-              "name": "WEBSITE_CONTENTAZUREFILECONNECTIONSTRING",
-              "value": "[concat('DefaultEndpointsProtocol=https;AccountName=',variables('storageAccountName'),';AccountKey=',listkeys(resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName')), '2018-11-01').keys[0].value,';','EndpointSuffix=',parameters('endpointSuffix'),';')]"
-            },
-            {
-              "name": "WEBSITE_CONTENTSHARE",
-              "value": "[toLower(parameters('functionAppName'))]"
-            },
-            {
-              "name": "WEBSITE_NODE_DEFAULT_VERSION",
-              "value": "~18"
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "functionAppName": {
+            "type": "string",
+            "defaultValue": "[concat('motadata-functionapp-', newGuid())]",
+            "metadata": {
+                "description": "The name of the function app "
             }
-          ]
-        }
-      }
-    },
-    {
-      "name": "[concat(parameters('functionAppName'), '/', parameters('functionName'))]",
-      "type": "Microsoft.Web/sites/functions",
-      "apiVersion": "2020-06-01",
-      "properties": {
-        "config": {
-          "bindings": [
-            {
-              "name": "eventHubMessages",
-              "type": "eventHubTrigger",
-              "direction": "in",
-              "eventHubName": "[parameters('eventhubName')]",
-              "connection": "[variables('connectionStringKey')]",
-              "cardinality": "many",
-              "dataType": "",
-              "consumerGroup": "$Default"
-            }
-          ],
-          "disabled": false
         },
-        "files": {
-          "__init__.py": "[parameters('functionCode')]"
+        "functionName": {
+            "type": "string",
+            "defaultValue": "motadata-function",
+            "metadata": {
+                "description": "The name of the function."
+            }
+        },
+        "eventhubName": {
+            "type": "string",
+            "defaultValue": "motadata-event",
+            "metadata": {
+                "description": "The name of the eventhub."
+            }
+        },
+        "eventhubNamespace": {
+            "type": "string",
+            "metadata": {
+                "description": "motadata-namespace"
+            }
+        },
+        "functionCode": {
+            "type": "string",
+            "metadata": {
+                "description": "Code for the function to run, saved into __init__.py"
+            }
+        },
+        "location": {
+            "type": "string",
+            "defaultValue": "[resourceGroup().location]",
+            "metadata": {
+                "description": "Location for all resources."
+            }
+        },
+        "endpointSuffix": {
+            "type": "string",
+            "defaultValue": "core.linux.net",
+            "metadata": {
+                "description": "Endpoint suffix for storage account"
+            }
         }
-      },
-      "dependsOn": [
-        "[resourceId('Microsoft.Web/sites', parameters('functionAppName'))]"
-      ]
-    }
-  ]
+    },
+    "variables": {
+        "storageAccountName": "[concat(uniquestring(resourceGroup().id), 'storageacct')]",
+        "connectionStringKey": "[concat('Motadata-',parameters('eventhubNamespace'),'-AccessKey')]",
+        "authRule": "[resourceId('Microsoft.EventHub/namespaces/authorizationRules', parameters('eventhubNamespace'),'RootManageSharedAccessKey')]"
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Storage/storageAccounts",
+            "apiVersion": "2019-06-01",
+            "name": "[variables('storageAccountName')]",
+            "location": "[parameters('location')]",
+            "kind": "StorageV2",
+            "sku": {
+                "name": "Standard_LRS"
+            }
+        },
+        {
+            "apiVersion": "2018-11-01",
+            "type": "Microsoft.Web/sites",
+            "name": "[parameters('functionAppName')]",
+            "location": "[parameters('location')]",
+            "kind": "functionapp,linux",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]"
+            ],
+            "properties": {
+                "name": "[parameters('functionAppName')]",
+                "clientAffinityEnabled": false,
+                "siteConfig": {
+                    "cors": {
+                        "allowedOrigins": [
+                            "*"
+                        ]
+                    },
+                    "appSettings": [
+                        {
+                            "name": "FUNCTIONS_EXTENSION_VERSION",
+                            "value": "~4"
+                        },
+                        {
+                            "name": "AzureWebJobsStorage",
+                            "value": "[concat('DefaultEndpointsProtocol=https;AccountName=',variables('storageAccountName'),';AccountKey=',listkeys(resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName')), '2018-11-01').keys[0].value,';','EndpointSuffix=',parameters('endpointSuffix'),';')]"
+                        },
+                        {
+                            "name": "FUNCTIONS_WORKER_RUNTIME",
+                            "value": "python"
+                        },
+                        {
+                            "name": "[variables('connectionStringKey')]",
+                            "value": "[listKeys(variables('authRule'),'2017-04-01').primaryConnectionString]"
+                        },
+                        {
+                            "name": "WEBSITE_CONTENTAZUREFILECONNECTIONSTRING",
+                            "value": "DefaultEndpointsProtocol=https;AccountName=t5ha4246vt2qkstorageacct;AccountKey=YayANZbbk39OQ3ewAGpCwLIJkn099LjVxNi0fmmYcVA3nnzJjjFv2Lu7t1Z1QndDwf9Pb9Kr6ZMJ+AStf9nXmQ==;EndpointSuffix=core.windows.net"
+                        },
+                        {
+                            "name": "WEBSITE_CONTENTSHARE",
+                            "value": "[toLower(parameters('functionAppName'))]"
+                        },
+                        {
+                            "name": "WEBSITE_NODE_DEFAULT_VERSION",
+                            "value": "~10"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "name": "[concat(parameters('functionAppName'), '/', parameters('functionName'))]",
+            "type": "Microsoft.Web/sites/functions",
+            "apiVersion": "2020-06-01",
+            "properties": {
+                "config": {
+                    "bindings": [
+                        {
+                            "name": "eventHubMessages",
+                            "type": "eventHubTrigger",
+                            "direction": "in",
+                            "eventHubName": "[parameters('eventhubName')]",
+                            "connection": "[variables('connectionStringKey')]",
+                            "cardinality": "many",
+                            "dataType": "",
+                            "consumerGroup": "$Default"
+                        }
+                    ],
+                    "disabled": false
+                },
+                "files": {
+                    "index.js": "[parameters('functionCode')]"
+                }
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', parameters('functionAppName'))]"
+            ]
+        }
+    ]
 }
