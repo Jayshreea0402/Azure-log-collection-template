@@ -29,7 +29,7 @@ Write-Host "Event Hub '$EventhubName' deployed successfully."
 
 # # Create the Azure Function App
 New-AzResourceGroupDeployment -ResourceGroupName $ResourceGroupName `
-    -TemplateUri "https://raw.githubusercontent.com/vikashm2711/motadata/main/function-app.json" `
+    -TemplateUri "https://raw.githubusercontent.com/Jayshreea0402/motadata/main/function-app.json" `
     -functionCode $functionCode `
     -functionName $FunctionName `
     -location $ResourceGroupLocation
