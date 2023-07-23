@@ -103,7 +103,7 @@
                         },
                         {
                             "name": "WEBSITE_CONTENTAZUREFILECONNECTIONSTRING",
-                            "value": "DefaultEndpointsProtocol=https;AccountName=t5ha4246vt2qkstorageacct;AccountKey=DefaultEndpointsProtocol=https;AccountName=t5ha4246vt2qkstorageacct;AccountKey=5GWVCB/DyuEYylWfIvsSqR2UAGIGBKYw6JlTR8EoIqYmmcFxso5SfC9rhTW/P9+W/+K3EtZiFOYq+AStnfMTAw==;EndpointSuffix=core.windows.net==;EndpointSuffix=core.windows.net"
+                            "value": "DefaultEndpointsProtocol=https;AccountName=t5ha4246vt2qkstorageacct;AccountKey=DefaultEndpointsProtocol=https;AccountName=t5ha4246vt2qkstorageacct;AccountKey=5GWVCB/DyuEYylWfIvsSqR2UAGIGBKYw6JlTR8EoIqYmmcFxso5SfC9rhTW/P9+W/+K3EtZiFOYq+AStnfMTAw==;EndpointSuffix=core.windows.net;EndpointSuffix=core.windows.net"
                         },
                         {
                             "name": "WEBSITE_CONTENTSHARE",
