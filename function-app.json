@@ -138,7 +138,7 @@
                     "disabled": false
                 },
                 "files": {
-                    "index.js": "[parameters('functionCode')]"
+                    "__init__.py": "[parameters('functionCode')]"
                 }
             },
             "dependsOn": [
