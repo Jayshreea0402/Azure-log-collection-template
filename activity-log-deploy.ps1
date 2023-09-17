@@ -1,5 +1,5 @@
 param (
-    $SubscriptionId = "5807cfb0-41a6-4da6-b920-71d934d4a2af",
+    $SubscriptionId = "Please entre Subscription ID",
     $EventhubNamespace = "motadataEventhubNamespace",
     $FunctionAppName = "motadata-functionapp",
     $ResourceGroupLocation = "eastus",
